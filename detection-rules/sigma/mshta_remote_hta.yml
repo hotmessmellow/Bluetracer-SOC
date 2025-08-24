@@ -1,0 +1,19 @@
+title: Mshta Remote HTA Execution
+id: 0a3c0b0b-qr4b-0011-2025-01
+status: experimental
+description: Detect mshta.exe launching a remote HTA (living-off-the-land).
+author: you
+date: 2025/08/24
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  sel:
+    EventID: 1
+    Image|endswith: "\\mshta.exe"
+    CommandLine|contains: "http"
+  condition: sel
+tags:
+  - attack.defense_evasion
+  - attack.t1218.005
+level: high

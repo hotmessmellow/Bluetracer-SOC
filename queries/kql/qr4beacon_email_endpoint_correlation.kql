@@ -1,0 +1,16 @@
+// Correlate suspected phishing URL domains from email with endpoint DNS queries within 30 min
+// Assumes EmailEvents table with UrlDomain, Recipient, RecipientDevice, TimeGenerated
+// and DNS table (Sysmon 22) with Computer, QueryName, TimeGenerated
+let window = 30m;
+let suspiciousDomains = EmailEvents
+| where TimeGenerated > ago(24h)
+| where UrlDomain has_any ("zip", "xyz") or strlen(UrlDomain) > 20
+| project UrlDomain, Recipient, RecipientDevice, EmailTime=TimeGenerated;
+suspiciousDomains
+| join kind=inner (
+    DNS
+    | project Computer, QueryName, DNSTime=TimeGenerated
+) on $left.RecipientDevice == $right.Computer
+| where DNSTime between (EmailTime .. EmailTime + window)
+| where QueryName has_any (UrlDomain)
+| project EmailTime, Recipient, Computer, UrlDomain, QueryName, DNSTime

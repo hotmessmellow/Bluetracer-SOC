@@ -1,0 +1,23 @@
+title: High-Entropy or Long Subdomain DNS Query
+id: 0a3c0b0b-qr4b-0014-2025-01
+status: experimental
+description: Flags DNS queries with suspiciously long or high-entropy subdomains.
+author: you
+date: 2025/08/24
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  sel:
+    EventID: 22
+  filter:
+    QueryName|re: '^[A-Za-z0-9-]{{30,}}\.'
+  condition: sel and filter
+fields:
+  - Computer
+  - User
+  - QueryName
+tags:
+  - attack.command_and_control
+  - attack.t1071.004
+level: medium

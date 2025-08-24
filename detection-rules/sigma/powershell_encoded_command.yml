@@ -1,0 +1,24 @@
+title: PowerShell EncodedCommand or Download Cradle
+id: 0a3c0b0b-qr4b-0015-2025-01
+status: experimental
+description: Detects PowerShell with EncodedCommand or WebClient/Invoke-WebRequest usage.
+author: you
+date: 2025/08/24
+logsource:
+  product: windows
+  service: powershell
+detection:
+  sel1:
+    EventID: 4104
+    Message|contains:
+      - "-EncodedCommand"
+  sel2:
+    EventID: 4104
+    Message|contains:
+      - "System.Net.WebClient"
+      - "Invoke-WebRequest"
+  condition: sel1 or sel2
+tags:
+  - attack.execution
+  - attack.t1059.001
+level: high

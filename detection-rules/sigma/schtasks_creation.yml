@@ -1,0 +1,21 @@
+title: Scheduled Task Creation Via Schtasks
+id: 0a3c0b0b-qr4b-0013-2025-01
+status: experimental
+description: Detect schtasks.exe creating or modifying tasks, potential persistence.
+author: you
+date: 2025/08/24
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  sel:
+    EventID: 1
+    Image|endswith: "\\schtasks.exe"
+    CommandLine|contains:
+      - " /Create "
+      - " /Change "
+  condition: sel
+tags:
+  - attack.persistence
+  - attack.t1053.005
+level: medium

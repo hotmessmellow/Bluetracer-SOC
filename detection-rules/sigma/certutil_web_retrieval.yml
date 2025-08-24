@@ -1,0 +1,22 @@
+title: Suspicious Certutil Web Retrieval
+id: 0a3c0b0b-qr4b-0012-2025-01
+status: experimental
+description: Detect certutil.exe used to download/encode content.
+author: you
+date: 2025/08/24
+logsource:
+  product: windows
+  service: sysmon
+detection:
+  sel:
+    EventID: 1
+    Image|endswith: "\\certutil.exe"
+    CommandLine|contains:
+      - " -urlcache "
+      - " -decode "
+      - " -f "
+  condition: sel
+tags:
+  - attack.defense_evasion
+  - attack.t1140
+level: medium

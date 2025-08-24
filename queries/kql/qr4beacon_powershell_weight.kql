@@ -1,0 +1,7 @@
+// EncodedCommand weight: base64 length heuristic + risky tokens
+SecurityEvent
+| where EventID in (4104, 4688)
+| extend base64Len = strlen(CommandLine)
+| extend risky = iif(CommandLine has_any ('FromBase64String','DownloadString','IEX','New-Object Net.WebClient'), 1, 0)
+| summarize score = max( iif(base64Len > 200, 2, 0) + risky ) by Computer, Process, CommandLine, bin(TimeGenerated, 10m)
+| where score >= 2

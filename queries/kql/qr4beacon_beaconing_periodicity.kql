@@ -1,0 +1,13 @@
+// QR4Beacon - DNS beaconing suspicion via periodicity heuristic
+// Assumes table: DNSEvents or Sysmon (EventID=22) ingested as 'DNS' with fields (Computer, QueryName, TimeGenerated)
+let lookback = 4h;
+DNS
+| where TimeGenerated > ago(lookback)
+| summarize count() by Computer, QueryName, bin(TimeGenerated, 1m)
+| make-series c=count() default=0 on TimeGenerated from ago(lookback) to now() step 1m by Computer, QueryName
+| extend periodScore = series_periods(c)   // Peaks indicate periodicity
+| mv-expand c to typeof(double), TimeGenerated to typeof(datetime)
+| project TimeGenerated, Computer, QueryName, c, periodScore
+| where periodScore > 0
+| summarize avg(c), max(periodScore) by Computer, QueryName
+| top 25 by max_periodScore desc

