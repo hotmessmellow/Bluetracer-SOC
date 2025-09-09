@@ -1,7 +1,7 @@
 # BlueTrace – QR4Beacon Scenario Pack
 
-A unique, reproducible SOC/IR lab scenario that correlates **email → DNS → PowerShell** signals for a QR-driven phishing campaign.
-All content is safe for training and meant for **isolated lab** use only.
+A unique SOC/IR lab scenario that correlates **email → DNS → PowerShell** signals for a QR-driven phishing campaign.
+Please use for educational purposes/training and meant for **isolated lab** use only.
 
 ## Scenario (QR4Beacon)
 - A user scans a QR code from a flyer and types the shown URL on their workstation.
